@@ -1,3 +1,6 @@
+__doc__ = "Manage and run anonymous, immutable virtual environments."
+__version__ = "0.0.1"
+
 import subprocess
 import json
 import sys
@@ -88,9 +91,6 @@ def make_ve(db, s):
 def main_make_ve(packages):
     a = frozenset(packages)
     debug("Hash: " + hex_hash(a))
-    if not a:
-        error('Please provide at least one package')
-        sys.exit(1)
     db = Db()
     d = make_ve(db, a)
     debug(f'Environment path: {d}')
@@ -100,9 +100,14 @@ def main_make_ve(packages):
     os.system(f"{d / 'bin' / 'inve'}")
 
 def main():
-    parser = ArgumentParser()
-    parser.add_argument('packages', metavar='P', type=str, nargs='+')
-    main_make_ve(parser.packages)
+    a = sys.argv[1:]
+    if a:
+        main_make_ve(a)
+    elif Path('requirements.txt') in Path('.').iterdir():
+        info('Would install from requirements (NOT IMPLEMENTED)')
+    else:
+        error('Please provide at least one package')
+        sys.exit(1)
 
 if __name__ == '__main__':
-    main_make_ve(sys.argv[1:])
+    main()
