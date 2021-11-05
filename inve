@@ -1,6 +1,6 @@
 #!/bin/sh
-export VIRTUAL_ENV={}
+export VIRTUAL_ENV="{}"
 export PS1="\e[0;32m[pyx-shell:\w]\$\e[0m "
 export PATH="$VIRTUAL_ENV/bin:$PATH"
 unset PYTHON_HOME
-exec "${@:-$SHELL}"
+exec "${{@:-$SHELL}}"

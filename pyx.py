@@ -8,6 +8,9 @@ import venv
 import hashlib
 from argparse import ArgumentParser
 
+def debug(s):
+    print(f'[\033[94mDEBUG\033[0m] {s}')
+
 def info(s):
     print(f'[\033[92mINFO\033[0m] {s}')
 
@@ -50,6 +53,10 @@ def get_name(s):
     h = hex_hash(s)
     return '-'.join([h] + list(s))
 
+def copy_inve(name, path):
+    with open(Path(__file__).parent / 'inve') as f: s = f.read()
+    with open(path / 'bin' / 'inve', 'w')  as f: f.write(s.format(path))
+
 def make_ive(name):
     file = prefix_path(name)
     venv.create(file)
@@ -69,6 +76,10 @@ def make_ve(db, s):
         name = get_name(s)
         info('Creating immutable environment')
         file = make_ive(name)
+        info('Installing packages')
+        for x in s:
+            subprocess.run([sys.executable, '-m', 'pip', 'install', x, f'--target={file}/lib/python3.9/site-packages'], capture_output=True)
+            info(f'Installed {x}')
         info('Created environment')
         db.add_requirements(s, str(file))
         db.save()
@@ -76,14 +87,14 @@ def make_ve(db, s):
 
 def main_make_ve(packages):
     a = frozenset(packages)
-    info("Hash: " + hex_hash(a))
+    debug("Hash: " + hex_hash(a))
     if not a:
         error('Please provide at least one package')
         sys.exit(1)
     db = Db()
     d = make_ve(db, a)
-    info(f'Environment path: {d}')
-    shutil.copy(Path(__file__).parent / 'inve', d / 'bin')
+    debug(f'Environment path: {d}')
+    copy_inve(get_name(a), d)
     info('Copied shell invoker to environment')
     info('Invoking shell...')
     os.system(f"{d / 'bin' / 'inve'}")
@@ -94,4 +105,4 @@ def main():
     main_make_ve(parser.packages)
 
 if __name__ == '__main__':
-    main()
+    main_make_ve(sys.argv[1:])
