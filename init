@@ -1,0 +1,18 @@
+#!/bin/sh
+if [ -z "$PATH_PREFIX" ]; then
+    export PATH_PREFIX="/pyx"
+fi
+
+cd $PATH_PREFIX
+
+echo {} > "db.json"
+curl -O https://raw.githubusercontent.com/techieji/pyx/main/inve
+
+if command -v python3; then
+    python3 -m pip install pyx-shell
+elif command -v python; then
+    python -m pip install pyx-shell
+else
+    echo "python3 or python could not be found on path. Please install the pyx-shell package manually."
+    exit
+fi

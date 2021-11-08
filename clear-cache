@@ -1,0 +1,3 @@
+#!/bin/sh
+echo {} > db.json
+rm cache/* -rfd
