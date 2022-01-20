@@ -6,8 +6,9 @@ from subprocess import run
 from spinny import Spinner
 import re
 
-# CACHE_DIR = Path('/c/Users/1593179/Documents/pyx/cache')
-CACHE_DIR = Path('/mnt/d/Documents/Pradhyum/Git-Repos/pyx/cache')
+CACHE_DIR = Path('~/.pyx')
+if not CACHE_DIR.exists():
+    CACHE_DIR.mkdir()
 
 class Package:
     def __init__(self, name):
