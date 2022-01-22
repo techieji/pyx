@@ -2,6 +2,8 @@
 
 *Environment management made easy*
 
+**Note: since this project is being actively developed, the information below may be out of date.**
+
 Pyx exists to literally fit into any projects with a `requirements.txt` and make hacking on
 it as simple as possible. By using virtualenv, Pyx is a fast and simple way to setup
 environments. Here's an example:
@@ -13,7 +15,7 @@ toolz
 $ pyx
 [INFO] A few steps occur...
 [PACKAGE] Installed bottle
-[PACkAGE] Installed toolz
+[PACKAGE] Installed toolz
 [INFO] Two other steps occur...
 [pyx-shell:] python3 -c "import bottle, toolz"
 [pyx-shell:]
